@@ -14,9 +14,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # If you're using DRF for API views
-    'exam_app',  # Your custom app for authentication and other features
-    'corsheaders',  # For CORS support
+    'rest_framework',
+    'exam_app',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
