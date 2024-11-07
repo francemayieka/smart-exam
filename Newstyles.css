@@ -1,0 +1,78 @@
+/* Add some basic styling to the modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1000; /* Ensure modal is above other content */
+}
+
+.modal-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 0.5rem; /* Rounded corners for modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+}
+
+/* Generate Exam Section Background */
+#generate-exam {
+    background-image: url('https://www.bing.com/images/search?view=detailV2&ccid=zohYRFTf&id=73493C92B80A6E9A92D71A94CDB6C8222C8C4719&thid=OIP.zohYRFTflYViH54_BK9iigHaEK&mediaurl=https%3a%2f%2fskitguys.com%2fmedia%2fimages%2fmotion%2fLight-Flow-Vibrant-Still_Shift-HD.jpg&exph=1080&expw=1920&FORM=IRPFED&ck=546919AFB7C0AB2CE177FAAB4F02EA5B&reqid=E8CB6E7A7F2143C794A2E5960B1F5A6B&selectedIndex=9&itb=0&idpp=insfeed'); /* Replace with your desired image */
+    background-size: cover;
+    background-position: center;
+    padding: 2rem; /* Add padding for spacing */
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
+/* Add some basic styling to the footer */
+footer {
+    background-color: #007BFF; /* Elegant blue background */
+    padding: 1.5rem; /* Increased padding for footer */
+    text-align: center; /* Center text in footer */
+    color: #ffffff; /* White text for better contrast */
+    border-top: 1px solid #0056b3; /* Darker blue top border */
+}
+
+/* Additional styling for forms */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    transition: border-color 0.3s ease; /* Smooth transition for focus */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #4f83e4; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Button styles for better appearance */
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for buttons */
+}
+
+button:hover {
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Adjust spacing for sections */
+section {
+    margin-bottom: 2rem; /* Space between sections */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .modal-content {
+        width: 95%; /* Full width on small screens */
+    }
+}
