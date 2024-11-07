@@ -13,7 +13,7 @@ from rest_framework import status
 
 
 def home(request):
-    return JsonResponse({'message': 'Welcome to the Auth API!'})
+    return JsonResponse({'message': 'Welcome to the Smart Exam App'})
 
 
 def generate_otp():
