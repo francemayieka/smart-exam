@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Smart Exam</title>
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 100%;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 500px;
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
+            <div class="text-2xl font-bold cursor-pointer" onclick="window.location.href='courses.html'">SmartExam</div>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="courses.html" class="hover:underline">Courses</a></li>
+                    <li><a href="#" class="hover:underline">About Us</a></li>
+                    <li><button id="contact-btn" class="hover:underline">Contact</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!--Hero Section -->
+        <section class="flex justify-center items-center h-screen bg-cover bg-center" style="background-image: 'https://th.bing.com/th/id/OIP.-HtcvS5mrTwBeKqrbI6QuQAAAA?w=286&h=180&c=7&r=0&o=5&pid=1.7';">
+            <div class="text-center bg-black bg-opacity-50 p-8 rounded-lg">
+                <h1 class="text-5xl font-bold text-white mb-4">Welcome to SmartExam</h1>
+                <p class="text-lg text-white mb-8">Your one-stop solution for generating and maintaining exams efficiently.</p>
+                <a href="#generate-exam" class="bg-blue-600 text-white py-3 px-6 rounnded-lg hover:bg-blue-500 transition duration-300">Generate Exam</a>
+            </div>
+        </section>
+
+        <!-- Generate Exam Section -->
+         <main class="py-10 flex-grow" id="generate-exam" style="background-image: url('https://th.bing.com/th/id/OIP.r9r2yDWrgHWVJ26B9xU0bgHaEK?w=298&h=180&c=7&r=0&o=5&pid=1.7');">
+            <section class="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-center mb-6 text-blue-600">Generate Exam</h2>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Course</label>
+                        <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:border-blue-500 focus:ring focus:ring-blue-200">
+                            <option value="">Select Course</option>
+                            <option value="course 1">Modern Web Development</option>
+                            <option value="course 2">Blockchain and Cloud Computing Fundamentals</option>
+                            <!-- Add more courses as needed -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Level</label>
+                        <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:border-blue-500 focus:ring-blue-200">
+                            <option value="">Select Level</option>
+                            <option value="Level 1">Level 1</option>
+                            <option value="Level 2">Level 2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Title</label>
+                        <input type="text" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="Enter Title">
+                    </div>
+                    <button type="submit" class="w-full bg-blue text-white py-2 rounded hover:bg-blue-500 transition duration-300">Gnerate Exam</button>
+                    <input type="file" class="block w-full border border-gray-300 rounded-md shadow-sm p-2 mb-4 bg-gray-50">
+                    <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-500 transition duration-300">Upload Paper</button>
+                    <button class=" w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-500 transition duration-300 ">Download Exam</button>
+                </form>
+            </section>
+        </main>
+
+        <!-- Dashboard -->
+        <section class="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-10">
+            <h2 class="text-3xl font-bold text-center mb-6 text-blue-600">Dashboard</h2>
+            <div class="flex justify-center mb-6">
+                <button class="bg-blue-600 text-white py-2 px-4 rounded hover;bg-blue-500 transition duration-300 mr-4">For Individuals</button>
+                <button class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500 transition duration-300">For Learning Institutions</button>
+            </div>
+            <div class="grid grid-cols-4 gap-4">
+                <!-- Add courses as needed -->
+                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="" alt="Course Image" class="w-full h-40 object-cover rounded-lg">
+                    <h3 class="text-lg font-bold text-gray-700">Course 1</h3>
+                    <p class="text-sm text-gray-600">Course description</p>
+                 </div>
+                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src=" "alt="Course Image" class="w-full h-40 object-cover rounded-lg">
+                    <h3 class="text-lg font-bold text-gray-700">Course 2</h3>
+                    <p class="text-sm text-gray-600">Course description</p>
+                </div>
+                <!-- Add more courses as needed-->
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+         <section class="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-10">
+            <h2 class="text-3l font-bold text-center mb-6 text-blue-600">Contact Us</h2>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:border-blue-500 focus:ring-blue-200" pkaceholder="Enter your email">
+                </div>
+            </form>
+        </section>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="text-3xl font-bold text-center mb-6 text-blue-600">Login</h2>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:border-blue-500 focus:ring-blue-200" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:ring focus:ring-blue-200" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover;bg-blue-500 transition duration-300">Login</button>
+                    <p class="text-sm text-gray-600">Don't have an account ? <a href="#" class="text-blue-600 hover:underline">Register</a></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-200 p-4 text-center text-gray-600">
+            <p>&copy; SmartExam-AllRightsReserved.</p>
+        </footer>
+
+        <script>
+            //Toggle login modal
+            document.getElementById("login-btn").addEventListener("click", function(){
+                document.getElementById("login-modal").style.display = "block";
+            });
+
+            //close login modal on click outside
+            window.addEventListener("click", function(event) {
+                if (event.target != document.getElementById("login-modal")) {
+                    document.getElementById("login-modal").style.display = "none";
+                }
+            });
+        </script>
+    </body>
+</html>
+
