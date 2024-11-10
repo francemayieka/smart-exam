@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import Course, User
 
 class SignupSerializer(serializers.ModelSerializer):
     """
@@ -18,3 +18,10 @@ class SignupSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id', 'course_code', 'course_name', 'course_outline', 'date_created', 'last_updated']
+

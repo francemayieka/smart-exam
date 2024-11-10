@@ -1,3 +1,5 @@
+from datetime import timedelta
+import os
 from pathlib import Path
 from decouple import config
 
@@ -5,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,8 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'exam_app',
+    'quiz_app',
     'corsheaders',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -35,7 +38,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
 ]
 
-ROOT_URLCONF = 'exam_project.urls'
+ROOT_URLCONF = 'quiz_project.urls'
 
 TEMPLATES = [
     {
@@ -53,7 +56,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'exam_project.wsgi.application'
+WSGI_APPLICATION = 'quiz_project.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -71,7 +74,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 SECRET_KEY = config('SECRET_KEY')
 
-AUTH_USER_MODEL = 'exam_app.User'
+AUTH_USER_MODEL = 'quiz_app.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,3 +102,20 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+USE_X_FORWARDED_HOST = True
+
+

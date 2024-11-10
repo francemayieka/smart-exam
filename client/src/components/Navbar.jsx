@@ -14,10 +14,10 @@ const Navbar = ({ isLoggedIn, username, handleLogout }) => {
             <>
               <span className="text-white">Hi, {username}!</span>
               <Link
-                to="/dashboard"
+                to="/courses"
                 className="bg-white text-blue-600 px-4 py-2 rounded shadow-md hover:bg-gray-100"
               >
-                Dashboard
+                Courses
               </Link>
               <button
                 onClick={() => {
