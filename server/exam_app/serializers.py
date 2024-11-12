@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, User
+from .models import Course, User, Exam
 
 class SignupSerializer(serializers.ModelSerializer):
     """
@@ -23,5 +23,9 @@ class SignupSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id', 'course_code', 'course_name', 'course_outline', 'date_created', 'last_updated']
+        fields = ['id', 'course_code', 'course_name', 'course_outline', 'uploaded_file']
 
+class ExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exam
+        fields = ['id', 'course', 'exam_name', 'exam_text', 'number_of_questions', 'marking_scheme', 'created_at']

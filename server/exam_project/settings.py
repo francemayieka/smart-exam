@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'quiz_app',
+    'exam_app',
     'corsheaders',
     'rest_framework_simplejwt',
 ]
@@ -38,7 +38,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
 ]
 
-ROOT_URLCONF = 'quiz_project.urls'
+ROOT_URLCONF = 'exam_project.urls'
 
 TEMPLATES = [
     {
@@ -56,7 +56,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'quiz_project.wsgi.application'
+WSGI_APPLICATION = 'exam_project.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -74,7 +74,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 SECRET_KEY = config('SECRET_KEY')
 
-AUTH_USER_MODEL = 'quiz_app.User'
+AUTH_USER_MODEL = 'exam_app.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
