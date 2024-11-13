@@ -4,3 +4,4 @@
 3. Ensure that generated exams contain names previously set by the owners
 4. Inspect all other APIs
 5. Develop templates and a home page. They should be mobile responsive.
+6. Course id and exam id
