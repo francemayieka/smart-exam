@@ -237,10 +237,10 @@ def delete_course(request, course_code):
 def add_exam_view(request):
     course_code = request.data.get('course_code')
     exam_name = request.data.get('exam_name')
-    exam_text = request.data.get('exam_text')
+    exam_questions = request.data.get('exam_questions')
     number_of_questions = request.data.get('number_of_questions', 0)
 
-    if not course_code or not exam_name or not exam_text:
+    if not course_code or not exam_name or not exam_questions:
         return Response({"error": "Course ID, Exam Name, and Exam Text are required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
@@ -252,7 +252,7 @@ def add_exam_view(request):
             course=course,
             user=request.user,
             exam_name=exam_name,
-            exam_text=exam_text,
+            exam_questions=exam_questions,
             number_of_questions=number_of_questions
         )
 
@@ -332,10 +332,10 @@ def search_exams_view(request):
 @api_view(['PATCH'])
 def update_exam_view(request, exam_name):
     exam_name = request.data.get('exam_name')
-    exam_text = request.data.get('exam_text')
+    exam_questions = request.data.get('exam_questions')
     number_of_questions = request.data.get('number_of_questions', 0)
 
-    if not exam_name or not exam_text:
+    if not exam_name or not exam_questions:
         return Response({"error": "Exam Name and Exam Text are required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
@@ -344,7 +344,7 @@ def update_exam_view(request, exam_name):
 
         # Update exam fields
         exam.exam_name = exam_name
-        exam.exam_text = exam_text
+        exam.exam_questions = exam_questions
         exam.number_of_questions = number_of_questions
         exam.save()
 
@@ -375,30 +375,43 @@ def delete_exam_view(request, exam_name):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 @api_view(['POST'])
-def generate_exam_view(request):
-    course_code = request.data.get('course_code')  # Get the course_id from the request
+@permission_classes([IsAuthenticated])
+def generate_exam_and_marking_scheme_view(request):
+    course_code = request.data.get('course_code')  # Get the course_code from the request
+    exam_name = request.data.get('exam_name')  # Get the exam_name from the request
 
     if not course_code:
         return Response({"error": "Course Code is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not exam_name:
+        return Response({"error": "Exam Name is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         # Fetch the course for the logged-in user
         course = Course.objects.get(user=request.user, course_code=course_code)
 
-        # Generate the exam based on the course_name and course_outline
-        exam_text = generate_exam(course.course_name, course.course_outline)
+        # Generate the exam text based on the course name and course outline
+        exam_questions = generate_exam(course.course_name, course.course_outline)
+
+        # Generate the marking scheme based on the generated exam text
+        marking_scheme = generate_marking_scheme(exam_questions)
 
         # Create and save the exam record
         exam = Exam.objects.create(
             course=course,
             user=request.user,
-            exam_text=exam_text
+            exam_name=exam_name,  # Save the provided exam name
+            exam_questions=exam_questions,
+            marking_scheme=marking_scheme  # Save the generated marking scheme
         )
 
         return Response({
-            "exam": exam_text,
-            "message": "Exam generated and saved successfully."
+            "exam_name": exam_name,  # Include exam name in the response
+            "exam": exam_questions,
+            "marking_scheme": marking_scheme,
+            "message": "Exam and marking scheme generated and saved successfully."
         }, status=status.HTTP_200_OK)
 
     except Course.DoesNotExist:
@@ -406,34 +419,6 @@ def generate_exam_view(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-@api_view(['POST'])
-def generate_marking_scheme_view(request):
-    exam_name = request.data.get('exam_name')
-
-    if not exam_name:
-        return Response({"error": "Exam Name is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        # Fetch the exam for the logged-in user
-        exam = Exam.objects.get(user=request.user, exam_name=exam_name)
-
-        # Generate the marking scheme based on the exam text
-        marking_scheme = generate_marking_scheme(exam.exam_text)
-
-        # Store the marking scheme in the exam record
-        exam.marking_scheme = marking_scheme
-        exam.save()
-
-        return Response({
-            "marking_scheme": marking_scheme,
-            "message": "Marking scheme generated and saved successfully."
-        }, status=status.HTTP_200_OK)
-
-    except Exam.DoesNotExist:
-        return Response({"error": "Exam not found."}, status=status.HTTP_404_NOT_FOUND)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

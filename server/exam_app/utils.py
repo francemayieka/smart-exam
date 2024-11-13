@@ -28,8 +28,8 @@ class ExamGenerationError(Exception):
 # Exam generation function
 def generate_exam(course_name, course_outline):
     prompt = [
-        {"role": "system", "content": "You are an AI assistant specialized in creating comprehensive exams for academic courses based on course outlines."},
-        {"role": "user", "content": f"Generate a university-level exam for the course '{course_name}'. Use the following course outline to create relevant questions and include clear marks allocation for each question. Course outline: {course_outline}"}
+        {"role": "system", "content": "You are an AI assistant specialized in creating university-level exams without introductory phrases or multiple-choice questions."},
+        {"role": "user", "content": f"Create an exam for the course '{course_name}' using the following course outline. Start directly with question 1 and do not include any introductory phrases or mark allocation. Course outline: {course_outline}"}
     ]
     
     try:
@@ -39,14 +39,15 @@ def generate_exam(course_name, course_outline):
             max_tokens=1000,
             temperature=0.6
         )
+        # Remove any trailing or leading whitespaces and ensure the response is formatted properly
         return response.choices[0].message.content.strip()
     except Exception as e:
         raise ExamGenerationError(f"Failed to generate exam: {str(e)}")
 
 def generate_marking_scheme(exam_text):
     prompt = [
-        {"role": "system", "content": "You are an AI assistant that generates detailed marking schemes for academic exams."},
-        {"role": "user", "content": f"Generate a marking scheme for the following exam: {exam_text}. Include precise answers and mark allocation for each question."}
+        {"role": "system", "content": "You are an AI assistant that generates a straightforward marking scheme for academic exams without specifying mark allocations."},
+        {"role": "user", "content": f"Create a clear marking scheme for the following exam. Provide simplified and direct answers to each question without specifying mark allocations. Exam: {exam_text}"}
     ]
     
     try:

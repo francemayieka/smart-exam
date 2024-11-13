@@ -22,9 +22,8 @@ class Course(models.Model):
 class Exam(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    exam_name = models.CharField(max_length=100, blank=True)
-    exam_text = models.TextField()
-    number_of_questions = models.IntegerField(default=0)
+    exam_name = models.CharField(max_length=100, blank=True, unique=True)
+    exam_questions = models.TextField()
     marking_scheme = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

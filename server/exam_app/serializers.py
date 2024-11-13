@@ -21,11 +21,16 @@ class SignupSerializer(serializers.ModelSerializer):
     
 
 class CourseSerializer(serializers.ModelSerializer):
+    course_id = serializers.IntegerField(source='id', read_only=True)
+
     class Meta:
         model = Course
-        fields = ['id', 'course_code', 'course_name', 'course_outline', 'uploaded_file']
+        fields = ['course_id', 'course_code', 'course_name', 'course_outline', 'uploaded_file']
 
 class ExamSerializer(serializers.ModelSerializer):
+    exam_id = serializers.IntegerField(source='id', read_only=True)
+    course_id = serializers.IntegerField(source='course.id', read_only=True)
+
     class Meta:
         model = Exam
-        fields = ['id', 'course', 'exam_name', 'exam_text', 'number_of_questions', 'marking_scheme', 'created_at']
+        fields = ['exam_id', 'course_id', 'course', 'exam_name', 'exam_questions', 'marking_scheme', 'created_at']
