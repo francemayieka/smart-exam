@@ -4,7 +4,7 @@ function Navbar() {
   return (
     <nav className="bg-blue-600 text-white p-4">
       <div className="container mx-auto flex justify-between">
-        <h1 className="text-xl font-bold">SmartExam</h1>
+        <Link to="/" className="text-xl font-bold">SmartExam</Link>
         <div>
           <Link to="/" className="px-4">Home</Link>
           <Link to="/courses" className="px-4">Courses</Link>

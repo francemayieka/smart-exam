@@ -5,28 +5,23 @@ import { useNavigate } from 'react-router-dom';
 function Courses() {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Function to fetch courses (all or filtered by search)
   const fetchCourses = async (query = '') => {
+    const authToken = localStorage.getItem('authToken');
+    const endpoint = query
+      ? `http://localhost:8000/api/search-course/?search_query=${encodeURIComponent(query)}`
+      : 'http://127.0.0.1:8000/api/list-courses/';
     try {
-      setLoading(true);
-      const authToken = localStorage.getItem('authToken');
-      const endpoint = query
-        ? `http://localhost:8000/api/search-course/?search_query=${encodeURIComponent(query)}`
-        : 'http://127.0.0.1:8000/api/list-courses/';
       const response = await axios.get(endpoint, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
       setCourses(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching courses:', error);
-      alert('Failed to fetch courses.');
-      setLoading(false);
     }
   };
 
@@ -38,10 +33,6 @@ function Courses() {
   const handleSearch = () => {
     fetchCourses(searchQuery);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="max-w-3xl mx-auto p-4">

@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,9 +21,17 @@ function Login() {
       // Store the token in local storage
       localStorage.setItem('authToken', access_token);
 
-      alert(`${message} Token stored successfully.`);
+      // Display success toast
+      toast.success(`${message} You are logged in successfully!`);
+      
+      // Clear fields
+      setUsername('');
+      setPassword('');
+
+      // Redirect to home page
+      navigate('/');
     } catch (error) {
-      alert('Login failed. Please check your credentials and try again.');
+      toast.error('Login failed. Please check your credentials and try again.');
       console.error('Error during login:', error);
     }
   };
@@ -52,6 +64,14 @@ function Login() {
           Login
         </button>
       </form>
+      <div className="mt-4 text-center">
+        <p>
+          Don't have an Account? <Link to="/signup" className="text-blue-600">Sign Up</Link>
+        </p>
+        <p>
+          <Link to="/forgot-password" className="text-blue-600">Forgot Password?</Link>
+        </p>
+      </div>
     </div>
   );
 }

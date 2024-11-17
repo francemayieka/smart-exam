@@ -5,28 +5,23 @@ import { useNavigate } from 'react-router-dom';
 function Exams() {
   const [exams, setExams] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Function to fetch exams (all or filtered by search)
   const fetchExams = async (query = '') => {
+    const authToken = localStorage.getItem('authToken');
+    const endpoint = query
+      ? `http://127.0.0.1:8000/api/search-exam/?search=${encodeURIComponent(query)}`
+      : 'http://127.0.0.1:8000/api/list-exams/';
     try {
-      setLoading(true);
-      const authToken = localStorage.getItem('authToken');
-      const endpoint = query
-        ? `http://127.0.0.1:8000/api/search-exam/?search=${encodeURIComponent(query)}`
-        : 'http://127.0.0.1:8000/api/list-exams/';
       const response = await axios.get(endpoint, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
       setExams(response.data.exams);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching exams:', error);
-      alert('Failed to fetch exams.');
-      setLoading(false);
     }
   };
 
@@ -38,10 +33,6 @@ function Exams() {
   const handleSearch = () => {
     fetchExams(searchQuery);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="max-w-3xl mx-auto p-4">

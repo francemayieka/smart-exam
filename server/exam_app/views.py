@@ -108,12 +108,12 @@ def reset_password(request):
     """
     API view to reset the user's password using OTP.
     """
-    email = request.data.get('email')
+    username = request.data.get('username')
     otp = request.data.get('otp')
     new_password = request.data.get('new_password')
 
     try:
-        user = User.objects.get(email=email)
+        user = User.objects.get(username=username)
 
         # Check if the OTP is valid and not expired
         if user.otp != otp:
