@@ -6,7 +6,18 @@ function AddCourse() {
   const [courseCode, setCourseCode] = useState('');
   const [courseName, setCourseName] = useState('');
   const [courseOutline, setCourseOutline] = useState('');
+  const [wordCount, setWordCount] = useState(0);  // Track word count
   const navigate = useNavigate();
+
+  // Function to handle changes in the course outline
+  const handleOutlineChange = (e) => {
+    const inputText = e.target.value;
+    const words = inputText.trim().split(/\s+/); // Split the input by spaces
+    if (words.length <= 100) {
+      setCourseOutline(inputText); // Update course outline if within word limit
+      setWordCount(words.length); // Update word count
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,11 +73,14 @@ function AddCourse() {
           <label className="block text-sm font-medium text-gray-700">Course Outline</label>
           <textarea
             value={courseOutline}
-            onChange={(e) => setCourseOutline(e.target.value)}
+            onChange={handleOutlineChange} // Use the updated function here
             className="mt-1 block w-full border px-4 py-2 rounded-md"
             rows="3"
             required
           />
+          <div className="text-sm text-gray-500 mt-2">
+            {wordCount}/100 words
+          </div>
         </div>
         <button
           type="submit"

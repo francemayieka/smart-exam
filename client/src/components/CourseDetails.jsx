@@ -156,7 +156,7 @@ const CourseDetails = () => {
                 </button>
                 <button
                     onClick={handleDelete}
-                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
                 >
                     Delete
                 </button>
@@ -205,14 +205,14 @@ const CourseDetails = () => {
                             <div className="flex justify-center space-x-4 mt-6">
                                 <button
                                     type="submit"
-                                    className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
+                                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
                                 >
                                     Update
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setShowUpdateForm(false)}
-                                    className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition"
+                                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
                                 >
                                     Cancel
                                 </button>

@@ -5,6 +5,9 @@ import Login from './components/Login';
 import Courses from './components/Courses';
 import AddCourse from './components/AddCourse';
 import CourseDetails from './components/CourseDetails';
+import Exams from './components/Exams';
+import AddExam from './components/AddExam';
+import ExamDetails from './components/ExamDetails';
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/add-course" element={<AddCourse />} />
         <Route path="/course/:courseId" element={<CourseDetails />} />
+        <Route path="exams" element={<Exams />} />
+        <Route path="add-exam" element={<AddExam />} />
+        <Route path="exam/:examName" element={<ExamDetails />} />
       </Routes>
     </Router>
   );

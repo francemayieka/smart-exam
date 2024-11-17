@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from .models import User, Course, Exam
 from .serializers import SignupSerializer, CourseSerializer
 from rest_framework import status
+from django.db.models import Q
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import generate_exam, generate_marking_scheme
 
@@ -180,18 +181,7 @@ def update_course(request, course_code):
     except Course.DoesNotExist:
         return Response({'error': 'Course not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Course
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Course
-from .serializers import CourseSerializer
-from rest_framework.permissions import IsAuthenticated
-from django.db.models import Q
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -234,6 +224,7 @@ def delete_course(request, course_code):
         return Response({'error': 'Course not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_exam_view(request):
     course_code = request.data.get('course_code')
     exam_name = request.data.get('exam_name')
@@ -266,6 +257,7 @@ def add_exam_view(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def list_exams_view(request):
     try:
         # Fetch all exams for the logged-in user
@@ -291,21 +283,25 @@ def list_exams_view(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Exam
+
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def search_exams_view(request):
+    """
+    Search for exams by partial or full match in exam_name or course_code.
+    """
     search_query = request.query_params.get('search', '')
 
     if not search_query:
         return Response({"error": "Search query is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        # Search for exams by partial or full match in exam_name
-        exams = Exam.objects.filter(user=request.user, exam_name__icontains=search_query)
+        # Place all positional arguments (Q objects) before keyword arguments
+        exams = Exam.objects.filter(
+            Q(exam_name__icontains=search_query) | Q(course__course_code__icontains=search_query),
+            user=request.user  # Keyword argument should be last
+        )
 
         if not exams.exists():
             return Response({"message": "No exams found matching the search query."}, status=status.HTTP_404_NOT_FOUND)
@@ -316,6 +312,8 @@ def search_exams_view(request):
                 "id": exam.id,
                 "exam_name": exam.exam_name,
                 "course_code": exam.course.course_code,
+                "exam_questions": exam.exam_questions,
+                "marking_scheme": exam.marking_scheme,
                 "created_at": exam.created_at
             }
             for exam in exams
@@ -327,11 +325,14 @@ def search_exams_view(request):
         }, status=status.HTTP_200_OK)
 
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_exam_view(request, exam_name):
     exam_name = request.data.get('exam_name')
     exam_questions = request.data.get('exam_questions')
@@ -360,6 +361,7 @@ def update_exam_view(request, exam_name):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete_exam_view(request, exam_name):
     try:
         # Fetch the exam for the logged-in user
@@ -378,6 +380,8 @@ def delete_exam_view(request, exam_name):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def generate_exam_and_marking_scheme_view(request):
@@ -391,13 +395,13 @@ def generate_exam_and_marking_scheme_view(request):
         return Response({"error": "Exam Name is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        # Fetch the course for the logged-in user
-        course = Course.objects.get(user=request.user, course_code=course_code)
+        # Fetch the course details using the course_code
+        course = Course.objects.get(course_code=course_code)
 
-        # Generate the exam text based on the course name and course outline
+        # Generate the exam questions based on the course name and course outline
         exam_questions = generate_exam(course.course_name, course.course_outline)
 
-        # Generate the marking scheme based on the generated exam text
+        # Generate the marking scheme based on the generated exam questions
         marking_scheme = generate_marking_scheme(exam_questions)
 
         # Create and save the exam record
@@ -409,8 +413,9 @@ def generate_exam_and_marking_scheme_view(request):
             marking_scheme=marking_scheme  # Save the generated marking scheme
         )
 
+        # Respond with the generated exam and marking scheme
         return Response({
-            "exam_name": exam_name,  # Include exam name in the response
+            "exam_name": exam_name,
             "exam": exam_questions,
             "marking_scheme": marking_scheme,
             "message": "Exam and marking scheme generated and saved successfully."
@@ -420,6 +425,7 @@ def generate_exam_and_marking_scheme_view(request):
         return Response({"error": "Course not found."}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 

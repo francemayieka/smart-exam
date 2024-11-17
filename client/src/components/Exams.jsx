@@ -2,41 +2,41 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Courses() {
-  const [courses, setCourses] = useState([]);
+function Exams() {
+  const [exams, setExams] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Function to fetch courses (all or filtered by search)
-  const fetchCourses = async (query = '') => {
+  // Function to fetch exams (all or filtered by search)
+  const fetchExams = async (query = '') => {
     try {
       setLoading(true);
       const authToken = localStorage.getItem('authToken');
       const endpoint = query
-        ? `http://localhost:8000/api/search-course/?search_query=${encodeURIComponent(query)}`
-        : 'http://127.0.0.1:8000/api/list-courses/';
+        ? `http://127.0.0.1:8000/api/search-exam/?search=${encodeURIComponent(query)}`
+        : 'http://127.0.0.1:8000/api/list-exams/';
       const response = await axios.get(endpoint, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setCourses(response.data);
+      setExams(response.data.exams);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching courses:', error);
-      alert('Failed to fetch courses.');
+      console.error('Error fetching exams:', error);
+      alert('Failed to fetch exams.');
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCourses();
+    fetchExams();
   }, []);
 
   // Handle search submission
   const handleSearch = () => {
-    fetchCourses(searchQuery);
+    fetchExams(searchQuery);
   };
 
   if (loading) {
@@ -47,15 +47,15 @@ function Courses() {
     <div className="max-w-3xl mx-auto p-4">
       <div className="flex justify-between mb-4">
         <button
-          onClick={() => navigate('/add-course')}
+          onClick={() => navigate('/add-exam')}
           className="bg-blue-600 text-white px-4 py-2 rounded-md"
         >
-          Add Course
+          Add Exam
         </button>
         <div className="flex items-center">
           <input
             type="text"
-            placeholder="Search course..."
+            placeholder="Search exam..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border px-3 py-2 rounded-l-md"
@@ -68,25 +68,26 @@ function Courses() {
           </button>
         </div>
       </div>
-      <h2 className="text-2xl font-bold mb-4 text-blue-600">Courses</h2>
-      {courses.length > 0 ? (
+      <h2 className="text-2xl font-bold mb-4 text-blue-600">Exams</h2>
+      {exams.length > 0 ? (
         <ul>
-          {courses.map((course) => (
+          {exams.map((exam, index) => (
             <li
-              key={course.course_id}
-              className="p-4 mb-2 rounded shadow cursor-pointer hover:bg-gray-100"
-              onClick={() => navigate(`/course/${course.course_code}`)}
+              key={index}
+              className="border p-4 mb-2 rounded shadow cursor-pointer hover:bg-gray-100"
+              onClick={() => navigate(`/exam/${exam.exam_name}`)}
             >
-              <h3 className="text-lg font-bold">{course.course_code}</h3>
-              <p className="text-gray-700">{course.course_name}</p>
+              <h3 className="text-lg font-semibold">{exam.exam_name}</h3>
+              <p className="text-gray-600"><strong>Course Code:</strong> {exam.course_code}</p>
+              <p className="text-gray-500 text-sm"><strong>Generated On:</strong> {new Date(exam.created_at).toLocaleDateString()}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No courses available.</p>
+        <p>No exams available.</p>
       )}
     </div>
   );
 }
 
-export default Courses;
+export default Exams;
