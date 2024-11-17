@@ -106,7 +106,7 @@ const CourseDetails = () => {
             console.error('Error updating course:', error);
             alert('Failed to update the course.');
         }
-    };    
+    };
 
     const handleDelete = async () => {
         const token = localStorage.getItem('authToken');
@@ -138,25 +138,25 @@ const CourseDetails = () => {
 
     // If course is not loaded yet, show loading
     if (!course) {
-        return <div>Loading...</div>;
+        return <div className="text-center py-10 text-lg">Loading...</div>;
     }
 
     return (
-        <div className="p-6 bg-white rounded shadow-md">
-            <h1 className="text-3xl font-bold mb-4">{course.course_name}</h1>
-            <p className="text-gray-700"><strong>Course Code:</strong> {course.course_code}</p>
-            <p className="text-gray-700"><strong>Outline:</strong> {course.course_outline}</p>
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
+            <h1 className="text-3xl font-bold mb-4 text-center">{course.course_name}</h1>
+            <p className="text-gray-700 mb-2"><strong>Course Code:</strong> {course.course_code}</p>
+            <p className="text-gray-700 mb-4"><strong>Outline:</strong> {course.course_outline}</p>
 
-            <div className="flex space-x-4 mt-6">
+            <div className="flex justify-center space-x-6 mt-6">
                 <button
                     onClick={handleUpdateClick}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
                 >
                     Update
                 </button>
                 <button
                     onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
                 >
                     Delete
                 </button>
@@ -164,8 +164,8 @@ const CourseDetails = () => {
 
             {showUpdateForm && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded shadow-lg w-96">
-                        <h2 className="text-2xl font-bold mb-4">Update Course</h2>
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h2 className="text-2xl font-bold mb-4 text-center">Update Course</h2>
                         <form onSubmit={handleUpdateSubmit}>
                             <div className="mb-4">
                                 <label htmlFor="course_code" className="block text-sm font-medium text-gray-700">Course Code</label>
@@ -202,17 +202,17 @@ const CourseDetails = () => {
                                 />
                             </div>
 
-                            <div className="flex space-x-4 mt-6">
+                            <div className="flex justify-center space-x-4 mt-6">
                                 <button
                                     type="submit"
-                                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                    className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
                                 >
                                     Update
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setShowUpdateForm(false)}
-                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                    className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition"
                                 >
                                     Cancel
                                 </button>

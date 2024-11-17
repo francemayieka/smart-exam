@@ -238,10 +238,10 @@ def add_exam_view(request):
     course_code = request.data.get('course_code')
     exam_name = request.data.get('exam_name')
     exam_questions = request.data.get('exam_questions')
-    number_of_questions = request.data.get('number_of_questions', 0)
+    marking_scheme = request.data.get('marking_scheme')
 
     if not course_code or not exam_name or not exam_questions:
-        return Response({"error": "Course ID, Exam Name, and Exam Text are required."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Course Code, Exam Name, and Exam Questions are required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         # Fetch the course for the logged-in user
@@ -253,7 +253,7 @@ def add_exam_view(request):
             user=request.user,
             exam_name=exam_name,
             exam_questions=exam_questions,
-            number_of_questions=number_of_questions
+            marking_scheme=marking_scheme
         )
 
         return Response({
@@ -276,6 +276,8 @@ def list_exams_view(request):
             {
                 "exam_name": exam.exam_name,
                 "course_code": exam.course.course_code,
+                "exam_questions": exam.exam_questions,
+                "marking_scheme": exam.marking_scheme,
                 "created_at": exam.created_at
             }
             for exam in exams
