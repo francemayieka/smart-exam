@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import JsonResponse
-from .models import User, Course, Exam
-from .serializers import SignupSerializer, CourseSerializer
+from .models import User, Course, Exam, ContactMessage
+from .serializers import ContactMessageSerializer, SignupSerializer, CourseSerializer
 from rest_framework import status
 from django.db.models import Q
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -427,7 +427,17 @@ def generate_exam_and_marking_scheme_view(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def contact_message(request):
+    """
+    API view to handle contact messages.
+    """
+    serializer = ContactMessageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Thank you for reaching out! We'll get back to you soon."}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

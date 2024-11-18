@@ -105,16 +105,17 @@ function Home() {
               answer: 'Yes, SmartExam is free for students and educators to use!',
             },
           ].map((faq, index) => (
-            <div
-              key={index}
-              className="border-b pb-4 cursor-pointer flex justify-between items-center"
-              onClick={() => toggleFAQ(index)}
-            >
-              <h3 className="text-xl">{faq.question}</h3>
-              <FontAwesomeIcon
-                icon={openFAQ === index ? faChevronUp : faChevronDown}
-                className="text-blue-600"
-              />
+            <div key={index} className="border-b pb-4">
+              <div
+                className="cursor-pointer flex justify-between items-center"
+                onClick={() => toggleFAQ(index)}
+              >
+                <h3 className="text-xl">{faq.question}</h3>
+                <FontAwesomeIcon
+                  icon={openFAQ === index ? faChevronUp : faChevronDown}
+                  className="text-blue-600"
+                />
+              </div>
               {openFAQ === index && <p className="text-gray-600 mt-2">{faq.answer}</p>}
             </div>
           ))}

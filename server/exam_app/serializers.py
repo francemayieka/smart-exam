@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, User, Exam
+from .models import Course, User, Exam, ContactMessage
 
 class SignupSerializer(serializers.ModelSerializer):
     """
@@ -34,3 +34,8 @@ class ExamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
         fields = ['exam_id', 'course_id', 'course', 'exam_name', 'exam_questions', 'marking_scheme', 'created_at']
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = ['id', 'name', 'email', 'message', 'created_at']

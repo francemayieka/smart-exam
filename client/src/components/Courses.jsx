@@ -12,7 +12,7 @@ function Courses() {
     const authToken = localStorage.getItem('authToken');
     const endpoint = query
       ? `http://localhost:8000/api/search-course/?search_query=${encodeURIComponent(query)}`
-      : 'http://127.0.0.1:8000/api/list-courses/';
+      : `http://127.0.0.1:8000/api/list-courses/`;
     try {
       const response = await axios.get(endpoint, {
         headers: {
@@ -25,9 +25,31 @@ function Courses() {
     }
   };
 
+  // Check if user is logged in and handle redirection
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const authToken = localStorage.getItem('authToken');
+
+    if (!isLoggedIn || !authToken) {
+      navigate('/login'); // Redirect to login if not logged in
+    } else {
+      // Attempt to validate the token by making a protected API call
+      axios
+        .get('http://127.0.0.1:8000/api/list-courses/', {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then(() => {
+          fetchCourses(); // Fetch courses if token is valid
+        })
+        .catch(() => {
+          localStorage.removeItem('authToken'); // Remove invalid token
+          localStorage.setItem('isLoggedIn', 'false'); // Update login state
+          navigate('/courses'); // Redirect to login
+        });
+    }
+  }, [navigate]);
 
   // Handle search submission
   const handleSearch = () => {

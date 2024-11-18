@@ -17,6 +17,8 @@ urlpatterns = [
     re_path(r'^update-course/(?P<course_code>[\w\-\.\@\s\/\(\)\&\+\*]+)/$', views.update_course, name='update_course'),
     re_path(r'^delete-course/(?P<course_code>[\w\-\.\@\s\/\(\)\&\+\*]+)/$', views.delete_course, name='delete_course'),
 
+    path('contact/', views.contact_message, name='contact-message'),
+
     path('add-exam/', views.add_exam_view, name='add_exam'),
     path('list-exams/', views.list_exams_view, name='list_exams'),
     # path('search-exam/', views.search_exams_view, name='search_exam'),

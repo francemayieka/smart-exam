@@ -25,9 +25,31 @@ function Exams() {
     }
   };
 
+  // Check if user is logged in and handle redirection
   useEffect(() => {
-    fetchExams();
-  }, []);
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const authToken = localStorage.getItem('authToken');
+
+    if (!isLoggedIn || !authToken) {
+      navigate('/login'); // Redirect to login if not logged in
+    } else {
+      // Attempt to validate the token by making a protected API call
+      axios
+        .get('http://127.0.0.1:8000/api/list-exams/', {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then(() => {
+          fetchExams(); // Fetch exams if token is valid
+        })
+        .catch(() => {
+          localStorage.removeItem('authToken'); // Remove invalid token
+          localStorage.setItem('isLoggedIn', 'false'); // Update login state
+          navigate('/exams'); // Redirect to login
+        });
+    }
+  }, [navigate]);
 
   // Handle search submission
   const handleSearch = () => {

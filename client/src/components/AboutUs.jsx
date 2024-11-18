@@ -52,18 +52,18 @@ function AboutUs() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Alice Johnson',
-                role: 'CEO & Founder',
+                name: 'Francis Mayieka',
+                role: 'Software Engineer',
                 img: teamWorking, // Replace with appropriate images
               },
               {
-                name: 'Michael Smith',
-                role: 'Lead Developer',
+                name: 'Lorraine Chelangat',
+                role: 'QA Engineer',
                 img: teamWorking,
               },
               {
-                name: 'Sophie Williams',
-                role: 'Marketing Head',
+                name: 'Reagan Omondi',
+                role: 'Front-End Engineer',
                 img: teamWorking,
               },
             ].map((member, index) => (

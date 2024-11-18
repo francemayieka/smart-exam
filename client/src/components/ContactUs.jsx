@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import customerCare from '../assets/customer-care.jpg';
 
 function ContactUs() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [statusMessage, setStatusMessage] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/contact/', formData);
+      setStatusMessage(response.data.message);
+
+      // Redirect to home page after a short delay
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); // 2-second delay
+    } catch (error) {
+      setStatusMessage('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Hero Section */}
@@ -9,9 +35,7 @@ function ContactUs() {
         <div className="h-[300px] bg-blue-600 flex items-center justify-center text-center text-white px-4">
           <div>
             <h1 className="text-4xl font-bold mb-2">Contact Us</h1>
-            <p className="text-lg">
-              Have questions or feedback? We'd love to hear from you!
-            </p>
+            <p className="text-lg">Have questions or feedback? We'd love to hear from you!</p>
           </div>
         </div>
       </div>
@@ -29,17 +53,17 @@ function ContactUs() {
                 <strong>Email:</strong> support@smartexam.com
               </p>
               <p className="text-gray-700">
-                <strong>Phone:</strong> +123 456 7890
+                <strong>Phone:</strong> +254 74 562 592
               </p>
               <p className="text-gray-700">
-                <strong>Address:</strong> 123 Learning Lane, Education City, EC123
+                <strong>Address:</strong> 123 Learning Lane, Soma City, EC123
               </p>
             </div>
           </div>
           <div>
             <img
               src={customerCare}
-              alt="Location map"
+              alt="Customer care"
               className="rounded-lg shadow-lg w-full object-cover"
             />
           </div>
@@ -50,7 +74,10 @@ function ContactUs() {
       <div className="py-12">
         <div className="container mx-auto px-4 md:px-0">
           <h2 className="text-3xl font-bold text-blue-600 text-center mb-8">Send Us a Message</h2>
-          <form className="max-w-2xl mx-auto space-y-6">
+          <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+            {statusMessage && (
+              <p className="text-center text-black-600 font-semibold">{statusMessage}</p>
+            )}
             <div>
               <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
                 Your Name
@@ -59,6 +86,8 @@ function ContactUs() {
                 type="text"
                 id="name"
                 name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 placeholder="Enter your name"
                 required
@@ -72,6 +101,8 @@ function ContactUs() {
                 type="email"
                 id="email"
                 name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 placeholder="Enter your email"
                 required
@@ -84,6 +115,8 @@ function ContactUs() {
               <textarea
                 id="message"
                 name="message"
+                value={formData.message}
+                onChange={handleChange}
                 rows="5"
                 className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 placeholder="Write your message"

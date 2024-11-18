@@ -15,20 +15,21 @@ function Login() {
       // Send POST request to the login API endpoint
       const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password });
 
-      // Extract the access token from the response
+      // Extract the access token and any relevant message from the response
       const { access_token, message } = response.data;
 
-      // Store the token in local storage
+      // Save login state in local storage
       localStorage.setItem('authToken', access_token);
+      localStorage.setItem('isLoggedIn', true);
 
       // Display success toast
       toast.success(`${message} You are logged in successfully!`);
-      
+
       // Clear fields
       setUsername('');
       setPassword('');
 
-      // Redirect to home page
+      // Redirect to the home page or dashboard
       navigate('/');
     } catch (error) {
       toast.error('Login failed. Please check your credentials and try again.');
