@@ -56,7 +56,7 @@ const ExamDetails = () => {
 
     const handleViewExamPDF = () => {
         if (exam && exam.exam_questions) {
-            generatePDF(`${exam.exam_name} - Exam`, exam.exam_questions);
+            generatePDF(`${exam.exam_name}`, exam.exam_questions);
         } else {
             alert('Exam questions not available.');
         }

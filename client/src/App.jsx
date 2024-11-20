@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
 import Login from './components/Login';
-import Logout from './components/Logout';
 import SignUp from './components/SignUp';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
@@ -17,11 +17,26 @@ import AddExam from './components/AddExam';
 import ExamDetails from './components/ExamDetails';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('isLoggedIn') === 'true'
+  );
+
+  const handleLogin = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    setIsLoggedIn(false);
+  };
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
         {/* Navbar */}
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
 
         {/* Main Content */}
         <div className="flex-grow">
@@ -32,8 +47,10 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
+            <Route
+              path="/login"
+              element={<Login onLogin={handleLogin} />}
+            />
             <Route path="/courses" element={<Courses />} />
             <Route path="/add-course" element={<AddCourse />} />
             <Route path="/course/:courseId" element={<CourseDetails />} />

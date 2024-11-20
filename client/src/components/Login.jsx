@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Login() {
+function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -12,25 +12,17 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Send POST request to the login API endpoint
       const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password });
 
-      // Extract the access token and any relevant message from the response
       const { access_token, message } = response.data;
 
-      // Save login state in local storage
       localStorage.setItem('authToken', access_token);
-      localStorage.setItem('isLoggedIn', true);
+      onLogin(); // Update state in App.jsx
 
-      // Display success toast
       toast.success(`${message} You are logged in successfully!`);
-
-      // Clear fields
       setUsername('');
       setPassword('');
-
-      // Redirect to the home page or dashboard
-      navigate('/');
+      navigate('/exams');
     } catch (error) {
       toast.error('Login failed. Please check your credentials and try again.');
       console.error('Error during login:', error);

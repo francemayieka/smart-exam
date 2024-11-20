@@ -46,7 +46,7 @@ function Courses() {
         .catch(() => {
           localStorage.removeItem('authToken'); // Remove invalid token
           localStorage.setItem('isLoggedIn', 'false'); // Update login state
-          navigate('/courses'); // Redirect to login
+          navigate('/'); // Redirect to login
         });
     }
   }, [navigate]);
