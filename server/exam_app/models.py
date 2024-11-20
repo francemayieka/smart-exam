@@ -13,8 +13,9 @@ class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course_code = models.CharField(max_length=10, unique=True)
     course_name = models.CharField(max_length=100)
-    university_name = models.CharField(max_length=100, blank=True)
     course_outline = models.TextField(blank=True)
+    university_name = models.CharField(max_length=100, blank=True)
+    university_logo = models.ImageField(upload_to='university_logos/', blank=True)
 
     def __str__(self):
         return f"{self.course_code} - {self.course_name}"
@@ -30,7 +31,16 @@ class Exam(models.Model):
     def __str__(self):
         return f"{self.exam_name} for {self.course.course_code}"
 
-class ContactMessage(models.Model):
+    @property
+    def university_name(self):
+        return self.course.university_name
+
+    @property
+    def university_logo(self):
+        return self.course.university_logo
+
+
+class Contact(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     message = models.TextField()

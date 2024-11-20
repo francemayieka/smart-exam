@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, User, Exam, ContactMessage
+from .models import Course, User, Exam, Contact
 
 class SignupSerializer(serializers.ModelSerializer):
     """
@@ -25,17 +25,20 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['course_id', 'course_code', 'course_name', 'university_name', 'course_outline']
+        fields = ['course_id', 'course_code', 'course_name', 'university_name', 'university_logo', 'course_outline']
 
 class ExamSerializer(serializers.ModelSerializer):
     exam_id = serializers.IntegerField(source='id', read_only=True)
     course_id = serializers.IntegerField(source='course.id', read_only=True)
+    course_code = serializers.CharField(source='course.course_code', read_only=True)  # Fetching from the related Course model
+    university_name = serializers.CharField(source='course.university_name', read_only=True)  # Fetching from the related Course model
+    university_logo = serializers.ImageField(source='course.university_logo', read_only=True)  # Fetching the logo from the related Course model
 
     class Meta:
         model = Exam
-        fields = ['exam_id', 'course_id', 'course', 'exam_name', 'exam_questions', 'marking_scheme', 'created_at']
+        fields = ['exam_id', 'course_id', 'course_code', 'course', 'exam_name', 'exam_questions', 'marking_scheme', 'created_at', 'university_name', 'university_logo']
 
-class ContactMessageSerializer(serializers.ModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ContactMessage
+        model = Contact
         fields = ['id', 'name', 'email', 'message', 'created_at']

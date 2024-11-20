@@ -45,30 +45,78 @@ const ExamDetails = () => {
         fetchExamDetails();
     }, [examName]);
 
-    const generatePDF = (title, content) => {
+
+    const generatePDF = (title, content, universityName, examDate) => {
         const doc = new jsPDF();
-        doc.setFontSize(16);
-        doc.text(title, 10, 10);
+        
+        // Ensure content is a string and handle cases where it's null or undefined
+        content = content ? String(content) : '';
+        universityName = universityName ? String(universityName) : 'Unknown University';
+        examDate = examDate ? new Date(examDate).toLocaleDateString() : 'Date not available';
+        
+        // Set up university name, title, and exam date with proper formatting
+        doc.setFontSize(18);
+        doc.setFont('times', 'bold');
+        doc.text(universityName, 10, 10);  // Display university name
+        
+        // Add exam date below university name
         doc.setFontSize(12);
-        doc.text(content, 10, 20);
+        doc.setFont('times', 'italic');
+        doc.text(`Exam Date: ${examDate}`, 10, 16); // Display exam date in italics
+    
+        // Add space between the title and content
+        doc.setFontSize(16);
+        doc.setFont('times', 'bold');
+        doc.text(title, 10, 22);  // Display title of exam
+    
+        // Add a horizontal line under the title for separation
+        doc.setLineWidth(0.5);
+        doc.line(10, 24, 200, 24);  // Horizontal line
+    
+        // Add content with normal word spacing and word wrapping
+        doc.setFontSize(12);
+        doc.setFont('times', 'normal');
+        const contentLines = doc.splitTextToSize(content, 180); // Word wrap to fit within the page width
+        doc.text(contentLines, 10, 30);  // Display content with word wrap
+    
+        // Save the PDF with the title name
         doc.save(`${title}.pdf`);
     };
-
+    
     const handleViewExamPDF = () => {
         if (exam && exam.exam_questions) {
-            generatePDF(`${exam.exam_name}`, exam.exam_questions);
+            // Ensure the content is trimmed and not empty
+            const examQuestions = exam.exam_questions.trim();
+            if (examQuestions) {
+                const universityName = exam.university_name || 'Unknown University';
+                const examDate = exam.created_at || null;
+                generatePDF(`${exam.exam_name} - Exam Questions`, examQuestions, universityName, examDate);
+            } else {
+                alert('Exam questions are empty.');
+            }
         } else {
             alert('Exam questions not available.');
         }
     };
-
+    
     const handleViewMarkingSchemePDF = () => {
         if (exam && exam.marking_scheme) {
-            generatePDF(`${exam.exam_name} - Marking Scheme`, exam.marking_scheme);
+            // Ensure the content is trimmed and not empty
+            const markingScheme = exam.marking_scheme.trim();
+            if (markingScheme) {
+                const universityName = exam.university_name || 'Unknown University';
+                const examDate = exam.created_at || null;
+                generatePDF(`${exam.exam_name} - Marking Scheme`, markingScheme, universityName, examDate);
+            } else {
+                alert('Marking scheme is empty.');
+            }
         } else {
             alert('Marking scheme not available.');
         }
     };
+    
+    
+
 
     const handleUpdateClick = () => setShowUpdateForm(true);
 
@@ -155,7 +203,7 @@ const ExamDetails = () => {
                 </button>
                 <button
                     onClick={handleDelete}
-                    className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
                 >
                     Delete
                 </button>

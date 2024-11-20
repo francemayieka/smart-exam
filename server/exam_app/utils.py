@@ -29,7 +29,7 @@ class ExamGenerationError(Exception):
 def generate_exam(course_name, course_outline):
     prompt = [
         {"role": "system", "content": "You are an AI assistant specialized in creating university-level exams without introductory phrases or multiple-choice questions."},
-        {"role": "user", "content": f"Create an exam for the course '{course_name}' using the following course outline. Start directly with question 1 and do not include any introductory phrases or mark allocation. Course outline: {course_outline}"}
+        {"role": "user", "content": f"Create an exam for the course '{course_name}' using the following course outline. Start directly with question 1 and do not include any introductory phrases or mark allocation. Course outline: {course_outline}. If a course has practical components, include them in the exam, for example you can include questions for writing code snippets in computer related exams."}
     ]
     
     try:

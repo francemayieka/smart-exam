@@ -6,7 +6,8 @@ function AddCourse() {
   const [courseCode, setCourseCode] = useState('');
   const [courseName, setCourseName] = useState('');
   const [courseOutline, setCourseOutline] = useState('');
-  const [wordCount, setWordCount] = useState(0);  // Track word count
+  const [institution, setInstitution] = useState(''); // State for Institution
+  const [wordCount, setWordCount] = useState(0); // Track word count
   const navigate = useNavigate();
 
   // Function to handle changes in the course outline
@@ -29,6 +30,7 @@ function AddCourse() {
           course_code: courseCode,
           course_name: courseName,
           course_outline: courseOutline,
+          university_name: institution, // Send institution as university_name
         },
         {
           headers: {
@@ -65,6 +67,16 @@ function AddCourse() {
             type="text"
             value={courseName}
             onChange={(e) => setCourseName(e.target.value)}
+            className="mt-1 block w-full border px-4 py-2 rounded-md"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Institution</label>
+          <input
+            type="text"
+            value={institution}
+            onChange={(e) => setInstitution(e.target.value)}
             className="mt-1 block w-full border px-4 py-2 rounded-md"
             required
           />

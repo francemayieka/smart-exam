@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import teamWorking from '../assets/team-working.jpg';
 import missionImage from '../assets/mission-image.jpg';
+import franceImage from '../assets/france.jpeg';
 
 function AboutUs() {
   return (
@@ -54,7 +55,7 @@ function AboutUs() {
               {
                 name: 'Francis Mayieka',
                 role: 'Software Engineer',
-                img: teamWorking, // Replace with appropriate images
+                img: franceImage,
               },
               {
                 name: 'Lorraine Chelangat',

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Course, Exam, ContactMessage
+from .models import User, Course, Exam, Contact
 
 @admin.register(User)
 class CustomUserAdmin(admin.ModelAdmin):
@@ -13,6 +13,6 @@ class CourseAdmin(admin.ModelAdmin):
 class ExamAdmin(admin.ModelAdmin):
     list_display = ['exam_name', 'course', 'user', 'created_at']
 
-@admin.register(ContactMessage)
-class ContactMessageAdmin(admin.ModelAdmin):
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'message', 'created_at')

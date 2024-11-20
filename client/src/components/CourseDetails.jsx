@@ -203,6 +203,18 @@ const CourseDetails = () => {
                                 />
                             </div>
 
+                            <div className="mb-4">
+                                <label htmlFor="university_name" className="block text-sm font-medium text-gray-700">University Name</label>
+                                <input
+                                    type="text"
+                                    name="university_name"
+                                    value={updatedCourse.university_name}
+                                    onChange={handleUpdateChange}
+                                    className="mt-1 block w-full px-4 py-2 border rounded-md"
+                                    required
+                                />
+                            </div>
+
                             <div className="flex justify-center space-x-4 mt-6">
                                 <button
                                     type="submit"

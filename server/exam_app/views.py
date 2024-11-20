@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import JsonResponse
-from .models import User, Course, Exam, ContactMessage
-from .serializers import ContactMessageSerializer, SignupSerializer, CourseSerializer
+from .models import User, Course, Exam, Contact
+from .serializers import ContactSerializer, SignupSerializer, CourseSerializer, ExamSerializer
 from rest_framework import status
 from django.db.models import Q
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -237,7 +237,7 @@ def add_exam_view(request):
 
     try:
         # Fetch the course for the logged-in user
-        course = Course.objects.get(user=request.user, course_code=course_code)
+        course = Course.objects.get(user=request.user, course_code=course_code, university_name=university_name, university_logo=university_logo)
 
         # Create and save the exam record
         exam = Exam.objects.create(
@@ -245,11 +245,14 @@ def add_exam_view(request):
             user=request.user,
             exam_name=exam_name,
             exam_questions=exam_questions,
-            marking_scheme=marking_scheme
+            marking_scheme=marking_scheme,
+            university_name=course.university_name,
+            university_logo=course.university_logo
         )
 
         return Response({
-            "message": "Exam created successfully."
+            "message": "Exam created successfully.",
+            "exam": ExamSerializer(exam).data  # Return the newly created exam details
         }, status=status.HTTP_201_CREATED)
 
     except Course.DoesNotExist:
@@ -261,23 +264,14 @@ def add_exam_view(request):
 @permission_classes([IsAuthenticated])
 def list_exams_view(request):
     try:
-        # Fetch all exams for the logged-in user
-        exams = Exam.objects.filter(user=request.user)
+        # Fetch all exams for the logged-in user, along with the related course
+        exams = Exam.objects.filter(user=request.user).select_related('course')
 
         # Serialize exam data
-        exam_data = [
-            {
-                "exam_name": exam.exam_name,
-                "course_code": exam.course.course_code,
-                "exam_questions": exam.exam_questions,
-                "marking_scheme": exam.marking_scheme,
-                "created_at": exam.created_at
-            }
-            for exam in exams
-        ]
+        serialized_exams = ExamSerializer(exams, many=True).data
 
         return Response({
-            "exams": exam_data,
+            "exams": serialized_exams,
             "message": "Exams fetched successfully."
         }, status=status.HTTP_200_OK)
 
@@ -434,7 +428,7 @@ def contact_message(request):
     """
     API view to handle contact messages.
     """
-    serializer = ContactMessageSerializer(data=request.data)
+    serializer = ContactSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Thank you for reaching out! We'll get back to you soon."}, status=status.HTTP_201_CREATED)
