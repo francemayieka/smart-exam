@@ -25,7 +25,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['course_id', 'course_code', 'course_name', 'course_outline', 'uploaded_file']
+        fields = ['course_id', 'course_code', 'course_name', 'university_name', 'course_outline']
 
 class ExamSerializer(serializers.ModelSerializer):
     exam_id = serializers.IntegerField(source='id', read_only=True)

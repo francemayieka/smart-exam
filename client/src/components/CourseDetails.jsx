@@ -146,6 +146,7 @@ const CourseDetails = () => {
             <h1 className="text-3xl font-bold mb-4 text-center">{course.course_name}</h1>
             <p className="text-gray-700 mb-2"><strong>Course Code:</strong> {course.course_code}</p>
             <p className="text-gray-700 mb-4"><strong>Outline:</strong> {course.course_outline}</p>
+            <p className="text-gray-700 mb-4"><strong>Institution:</strong> {course.university_name}</p>
 
             <div className="flex justify-center space-x-6 mt-6">
                 <button

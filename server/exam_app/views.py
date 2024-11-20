@@ -145,6 +145,7 @@ def add_course(request):
         return Response({
             'course_code': course.course_code,
             'course_name': course.course_name,
+            'university_name': course.university_name,
             'message': 'Course added successfully.'
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

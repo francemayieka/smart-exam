@@ -13,8 +13,8 @@ class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course_code = models.CharField(max_length=10, unique=True)
     course_name = models.CharField(max_length=100)
+    university_name = models.CharField(max_length=100, blank=True)
     course_outline = models.TextField(blank=True)
-    uploaded_file = models.FileField(upload_to='course_outlines/', blank=True)
 
     def __str__(self):
         return f"{self.course_code} - {self.course_name}"

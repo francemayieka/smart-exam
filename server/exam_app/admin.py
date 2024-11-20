@@ -7,7 +7,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['course_code', 'course_name', 'user']
+    list_display = ['course_code', 'course_name', 'university_name', 'user']
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
