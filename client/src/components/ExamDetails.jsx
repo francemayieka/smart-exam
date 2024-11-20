@@ -48,40 +48,45 @@ const ExamDetails = () => {
 
     const generatePDF = (title, content, universityName, examDate) => {
         const doc = new jsPDF();
-        
+    
         // Ensure content is a string and handle cases where it's null or undefined
         content = content ? String(content) : '';
         universityName = universityName ? String(universityName) : 'Unknown University';
         examDate = examDate ? new Date(examDate).toLocaleDateString() : 'Date not available';
-        
+    
+        // Add SmartExam branding at the top
+        doc.setFontSize(10);
+        doc.setFont('times', 'italic');
+        doc.text('SmartExam', 10, 8); // Display SmartExam in small text at the top-left corner
+    
         // Set up university name, title, and exam date with proper formatting
         doc.setFontSize(18);
         doc.setFont('times', 'bold');
-        doc.text(universityName, 10, 10);  // Display university name
-        
+        doc.text(universityName, 10, 18); // Display university name below SmartExam
+    
         // Add exam date below university name
         doc.setFontSize(12);
         doc.setFont('times', 'italic');
-        doc.text(`Exam Date: ${examDate}`, 10, 16); // Display exam date in italics
+        doc.text(`Exam Date: ${examDate}`, 10, 24); // Display exam date in italics
     
         // Add space between the title and content
         doc.setFontSize(16);
         doc.setFont('times', 'bold');
-        doc.text(title, 10, 22);  // Display title of exam
+        doc.text(title, 10, 30); // Display title of exam
     
         // Add a horizontal line under the title for separation
         doc.setLineWidth(0.5);
-        doc.line(10, 24, 200, 24);  // Horizontal line
+        doc.line(10, 32, 200, 32); // Horizontal line
     
         // Add content with normal word spacing and word wrapping
         doc.setFontSize(12);
         doc.setFont('times', 'normal');
         const contentLines = doc.splitTextToSize(content, 180); // Word wrap to fit within the page width
-        doc.text(contentLines, 10, 30);  // Display content with word wrap
+        doc.text(contentLines, 10, 38); // Display content with word wrap
     
         // Save the PDF with the title name
         doc.save(`${title}.pdf`);
-    };
+    };    
     
     const handleViewExamPDF = () => {
         if (exam && exam.exam_questions) {
@@ -90,7 +95,7 @@ const ExamDetails = () => {
             if (examQuestions) {
                 const universityName = exam.university_name || 'Unknown University';
                 const examDate = exam.created_at || null;
-                generatePDF(`${exam.exam_name} - Exam Questions`, examQuestions, universityName, examDate);
+                generatePDF(`${exam.course_code}: ${exam.exam_name} - Questions`, examQuestions, universityName, examDate);
             } else {
                 alert('Exam questions are empty.');
             }

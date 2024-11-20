@@ -46,42 +46,6 @@ function AboutUs() {
         </div>
       </div>
 
-      {/* Team Section */}
-      <div className="py-12">
-        <div className="container mx-auto text-center px-4 md:px-0">
-          <h2 className="text-3xl font-bold text-blue-600 mb-8">Meet Our Team</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Francis Mayieka',
-                role: 'Software Engineer',
-                img: franceImage,
-              },
-              {
-                name: 'Lorraine Chelangat',
-                role: 'QA Engineer',
-                img: teamWorking,
-              },
-              {
-                name: 'Reagan Omondi',
-                role: 'Front-End Engineer',
-                img: teamWorking,
-              },
-            ].map((member, index) => (
-              <div key={index} className="bg-white shadow-lg rounded-lg p-6">
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  className="w-32 h-32 mx-auto rounded-full mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                <p className="text-blue-600">{member.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Vision Section */}
       <div className="py-12 bg-blue-50">
         <div className="container mx-auto grid md:grid-cols-2 gap-8 items-center px-4 md:px-0">
