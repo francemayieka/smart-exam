@@ -6,3 +6,6 @@
 <!-- 5. Develop templates and a home page. They should be mobile responsive. -->
 <!-- 6. Course id and exam id -->
 7. Arrange newly generated exams and courses at the top
+8. Toasts
+9. Drop down
+10. University Logo

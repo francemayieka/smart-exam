@@ -37,7 +37,7 @@ def generate_exam(course_name, course_outline):
             model=deployment,
             messages=prompt,
             max_tokens=1000,
-            temperature=0.6
+            temperature=0.6 # Adjust the temperature to control the randomness of the responses
         )
         # Remove any trailing or leading whitespaces and ensure the response is formatted properly
         return response.choices[0].message.content.strip()
@@ -46,7 +46,7 @@ def generate_exam(course_name, course_outline):
 
 def generate_marking_scheme(exam_text):
     prompt = [
-        {"role": "system", "content": "You are an AI assistant that generates a straightforward marking scheme for academic exams without specifying mark allocations."},
+        {"role": "system", "content": "You are an AI assistant that generates a straightforward marking scheme for academic exams without specifying mark allocations. For example if the question is what is 2+2, the answer should be 4."},
         {"role": "user", "content": f"Create a clear marking scheme for the following exam. Provide simplified and direct answers to each question without specifying mark allocations. Exam: {exam_text}"}
     ]
     

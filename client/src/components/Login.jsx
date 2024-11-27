@@ -22,7 +22,7 @@ function Login({ onLogin }) {
       toast.success(`${message} You are logged in successfully!`);
       setUsername('');
       setPassword('');
-      navigate('/exams');
+      navigate('/');
     } catch (error) {
       toast.error('Login failed. Please check your credentials and try again.');
       console.error('Error during login:', error);

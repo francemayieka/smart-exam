@@ -160,7 +160,8 @@ def list_courses(request):
     if courses.exists():
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response({'message': 'No courses found.'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({'message': 'No courses found.'}, status=status.HTTP_200_OK)
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
